@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FeedLayout } from '@/components/templates/FeedLayout/FeedLayout';
-import { Sidebar } from '@/components/organisms/Sidebar/Sidebar';
+import { Sidebar } from '@/components/organisms/Sidebar';
 import { Card } from '@/components/atoms/Card';
 import { Heading } from '@/components/atoms/Text/Heading';
 import { Text } from '@/components/atoms/Text';
@@ -57,7 +57,7 @@ export default function HomePage() {
               inputSize="lg"
             />
             <Button onClick={handleSearch} size="lg" className="gap-2">
-              <Icon icon={Search} size="sm" />
+              <Search className="w-4 h-4" />
               Go
             </Button>
           </div>

@@ -32,7 +32,7 @@ export function FeedLayout({
 
           {sidebar && (
             <aside className="lg:col-span-4 space-y-4">
-              <div className={cn('sticky top-20', sidebar && 'space-y-4')}>
+              <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto space-y-4">
                 {sidebar}
               </div>
             </aside>

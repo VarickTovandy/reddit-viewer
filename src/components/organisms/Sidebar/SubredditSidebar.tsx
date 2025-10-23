@@ -7,8 +7,10 @@ import { Heading } from '@/components/atoms/Text/Heading';
 import { Text } from '@/components/atoms/Text';
 import { Divider } from '@/components/atoms/Divider';
 import { RedditSubreddit } from '@/types/reddit';
+import { useSubredditRules } from '@/lib/hooks/useSubredditRules';
 import { htmlToText } from '@/lib/utils/markdown';
 import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
 
 export interface SubredditSidebarProps {
   subreddit?: RedditSubreddit;
@@ -21,6 +23,11 @@ export function SubredditSidebar({
   isLoading = false,
   className 
 }: SubredditSidebarProps) {
+  const { data: rules = [], isLoading: isLoadingRules } = useSubredditRules({
+    subreddit: subreddit?.display_name || '',
+    enabled: !!subreddit,
+  });
+
   if (isLoading) {
     return (
       <aside className={cn('space-y-4', className)}>
@@ -52,14 +59,53 @@ export function SubredditSidebar({
         over18={subreddit.over18}
       />
 
-      {subreddit.description && (
+      {!isLoadingRules && rules.length > 0 && (
         <Card>
           <div className="space-y-3">
-            <Heading level="h6">Community Description</Heading>
+            <Heading level="h6">Rules</Heading>
             <Divider />
-            <Text size="sm" variant="muted" className="line-clamp-6">
-              {htmlToText(subreddit.description)}
-            </Text>
+            <div className="space-y-2">
+              {rules.map((rule, index) => (
+                <details key={index} className="group">
+                  <summary className="cursor-pointer list-none">
+                    <div className="flex items-start gap-2 p-2 rounded hover:bg-accent transition-colors">
+                      <Text weight="semibold" size="sm" className="flex-1">
+                        {index + 1}. {rule.short_name}
+                      </Text>
+                      <svg
+                        className="w-4 h-4 transition-transform group-open:rotate-180 flex-shrink-0 mt-0.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </summary>
+                  {rule.description && (
+                    <div className="px-2 pb-2 pt-1 prose prose-sm max-w-none dark:prose-invert">
+                      <ReactMarkdown
+                        components={{
+                          a: ({ node, ...props }) => (
+                            <a 
+                              {...props} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="text-primary underline hover:text-primary/80"
+                            />
+                          ),
+                          p: ({ node, ...props }) => (
+                            <p {...props} className="text-xs text-muted-foreground whitespace-pre-wrap break-words m-0" />
+                          ),
+                        }}
+                      >
+                        {rule.description}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+                </details>
+              ))}
+            </div>
           </div>
         </Card>
       )}

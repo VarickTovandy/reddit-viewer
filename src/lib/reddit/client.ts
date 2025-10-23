@@ -159,6 +159,15 @@ class RedditClient {
   }
 
   /**
+   * Get subreddit rules
+   */
+  async getSubredditRules(subreddit: string): Promise<any> {
+    return this.makeRequest<any>(
+      `/r/${subreddit}/about/rules`
+    );
+  }
+
+  /**
    * Search posts across Reddit or within a subreddit
    */
   async searchPosts(
