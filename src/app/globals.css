@@ -45,42 +45,40 @@
   --radius-full: 9999px;
 }
 
-/* Dark mode overrides */
-.dark {
-  @theme {
-    --color-background: oklch(10% 0 0);           /* near black */
-    --color-foreground: oklch(98% 0 0);           /* near white */
-    
-    --color-card: oklch(13% 0 0);                 /* very dark gray */
-    --color-card-foreground: oklch(98% 0 0);      /* near white */
-    
-    --color-popover: oklch(13% 0 0);              /* very dark gray */
-    --color-popover-foreground: oklch(98% 0 0);   /* near white */
-    
-    --color-primary: oklch(98% 0 0);              /* near white */
-    --color-primary-foreground: oklch(15% 0 0);   /* dark gray */
-    
-    --color-secondary: oklch(20% 0 0);            /* dark gray */
-    --color-secondary-foreground: oklch(98% 0 0); /* near white */
-    
-    --color-muted: oklch(20% 0 0);                /* dark gray */
-    --color-muted-foreground: oklch(64% 0 0);     /* light gray */
-    
-    --color-accent: oklch(20% 0 0);               /* dark gray */
-    --color-accent-foreground: oklch(98% 0 0);    /* near white */
-    
-    --color-destructive: oklch(50% 0.2 27);       /* dark red */
-    --color-destructive-foreground: oklch(98% 0 0); /* near white */
-    
-    --color-border: oklch(20% 0 0);               /* dark gray border */
-    --color-input: oklch(20% 0 0);                /* dark gray border */
-    --color-ring: oklch(83% 0 0);                 /* light focus ring */
-    
-    /* Reddit-specific colors (adjusted for dark mode) */
-    --color-reddit-orange: oklch(65% 0.2 40);     /* slightly brighter */
-    --color-reddit-blue: oklch(65% 0.15 250);     /* slightly brighter */
-    --color-reddit-gray: oklch(60% 0 0);          /* lighter gray */
-  }
+/* Dark mode overrides - MUST be outside @theme */
+:root.dark {
+  --color-background: oklch(10% 0 0);           /* near black */
+  --color-foreground: oklch(98% 0 0);           /* near white */
+  
+  --color-card: oklch(13% 0 0);                 /* very dark gray */
+  --color-card-foreground: oklch(98% 0 0);      /* near white */
+  
+  --color-popover: oklch(13% 0 0);              /* very dark gray */
+  --color-popover-foreground: oklch(98% 0 0);   /* near white */
+  
+  --color-primary: oklch(98% 0 0);              /* near white */
+  --color-primary-foreground: oklch(15% 0 0);   /* dark gray */
+  
+  --color-secondary: oklch(20% 0 0);            /* dark gray */
+  --color-secondary-foreground: oklch(98% 0 0); /* near white */
+  
+  --color-muted: oklch(20% 0 0);                /* dark gray */
+  --color-muted-foreground: oklch(64% 0 0);     /* light gray */
+  
+  --color-accent: oklch(20% 0 0);               /* dark gray */
+  --color-accent-foreground: oklch(98% 0 0);    /* near white */
+  
+  --color-destructive: oklch(50% 0.2 27);       /* dark red */
+  --color-destructive-foreground: oklch(98% 0 0); /* near white */
+  
+  --color-border: oklch(20% 0 0);               /* dark gray border */
+  --color-input: oklch(20% 0 0);                /* dark gray border */
+  --color-ring: oklch(83% 0 0);                 /* light focus ring */
+  
+  /* Reddit-specific colors (adjusted for dark mode) */
+  --color-reddit-orange: oklch(65% 0.2 40);     /* slightly brighter */
+  --color-reddit-blue: oklch(65% 0.15 250);     /* slightly brighter */
+  --color-reddit-gray: oklch(60% 0 0);          /* lighter gray */
 }
 
 /* Base styles */
@@ -113,6 +111,25 @@ body {
 
 @utility bg-reddit-blue {
   background-color: var(--color-reddit-blue);
+}
+
+@utility hover-bg-reddit-orange {
+  &:hover {
+    background-color: var(--color-reddit-orange);
+  }
+}
+
+/* Hover states for upvote/downvote */
+@utility hover-text-reddit-orange {
+  &:hover {
+    color: var(--color-reddit-orange);
+  }
+}
+
+@utility hover-text-reddit-blue {
+  &:hover {
+    color: var(--color-reddit-blue);
+  }
 }
 
 /* Custom utility classes */
@@ -153,15 +170,11 @@ body {
   background-color: var(--color-muted);
 }
 
-/* Custom variants for theme-aware components */
-@variant reddit-upvoted {
-  &:where(.upvoted, [data-upvoted="true"]) {
-    color: var(--color-reddit-orange);
-  }
+/* Data attribute-based styles for voted states */
+[data-upvoted="true"] {
+  color: var(--color-reddit-orange);
 }
 
-@variant reddit-downvoted {
-  &:where(.downvoted, [data-downvoted="true"]) {
-    color: var(--color-reddit-blue);
-  }
+[data-downvoted="true"] {
+  color: var(--color-reddit-blue);
 }
